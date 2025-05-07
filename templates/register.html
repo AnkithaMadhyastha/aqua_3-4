@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #00BFA6;
+      --secondary: #FF6F61;
+      --text-light: #ffffff;
+      --text-dark: #1a1f36;
+      --background: #f9fcfb;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background-circles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .background-circles div {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.05;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .circle1 {
+      width: 300px;
+      height: 300px;
+      background: var(--secondary);
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .circle2 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary);
+      top: 60%;
+      left: 70%;
+      animation-delay: 5s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+      100% { transform: translateY(0px) scale(1); }
+    }
+
+    .form-container {
+      position: relative;
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      padding: 50px 40px;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .form-container::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      z-index: -1;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      filter: blur(20px);
+      opacity: 0.3;
+      border-radius: 20px;
+      animation: pulse 6s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 16px 20px 16px 50px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .input-group svg {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      fill: var(--text-light);
+      transition: fill 0.3s ease;
+    }
+
+    .input-group input:focus ~ svg {
+      fill: var(--primary);
+    }
+
+    .button {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background: radial-gradient(circle at center, var(--primary), transparent 60%);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+      transition: all 0.5s ease;
+      border-radius: 50%;
+    }
+
+    .button:hover::before {
+      opacity: 0.3;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 191, 166, 0.4);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .form-footer {
+      margin-top: 25px;
+      font-size: 1rem;
+      color: white;
+    }
+
+    .form-footer a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .form-footer a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      background: var(--text-light);
+      transition: width 0.3s ease;
+    }
+
+    .form-footer a:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 40px 30px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background-circles">
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+  </div>
+
+  <div class="form-container">
+    <h1>Register</h1>
+    <form action="/register" method="POST">
+      <div class="input-group">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+          <path d="M12 14c-4.41 0-8 2.24-8 5v2h16v-2c0-2.76-3.59-5-8-5z"/>
+        </svg>
+        <input type="text" name="username" placeholder="Username" required>
+      </div>
+      <div class="input-group">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6l8 5 8-5v6zm0-10l-8 5-8-5V6h16v4z"/>
+        </svg>
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+      <div class="input-group">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/>
+        </svg>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <button type="submit" class="button">Register</button>
+    </form>
+    <div class="form-footer">
+      Already have an account? <a href="/login">Login here</a>
+    </div>
+  </div>
+
+</body>
+</html>

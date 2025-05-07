@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drainage Blockage Detector</title>
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+</head>
+<body>
+    <h1>Drainage Blockage Detection</h1>
+    <form method="POST" action="/predict">
+        <label>Location:</label><br>
+        <input type="text" name="location"><br>
+
+        <label>Water Level:</label><br>
+        <input type="number" name="water_level" step="any"><br>
+
+        <label>Flow Rate:</label><br>
+        <input type="number" name="flow_rate" step="any"><br>
+
+        <label>Pressure:</label><br>
+        <input type="number" name="pressure" step="any"><br>
+
+        <label>Vibration:</label><br>
+        <input type="number" name="vibration" step="any"><br>
+
+        <label>Gas Concentration:</label><br>
+        <input type="number" name="gas_concentration" step="any"><br>
+
+        <label>Proximity:</label><br>
+        <input type="number" name="proximity" step="any"><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction_text %}
+        <h2>{{ prediction_text }}</h2>
+    {% endif %}
+</body>
+</html>

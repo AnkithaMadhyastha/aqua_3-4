@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Drainage System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #00BFA6; /* Vibrant teal */
+      --primary-light: #66F0E6;
+      --primary-dark: #009E8A;
+      --secondary: #FF6F61; /* Coral red */
+      --secondary-light: #FF8E72;
+      --text-light: #ffffff;
+      --text-dark: #1a1f36;
+      --text-muted: #6b7280;
+      --background: #f9fafb;
+      --card-bg: #ffffff;
+      --card-shadow: 0 10px 30px rgba(0, 191, 166, 0.15);
+      --card-hover-shadow: 0 20px 40px rgba(0, 191, 166, 0.25);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 60px 40px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      z-index: -1;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      filter: blur(20px);
+      opacity: 0.2;
+      border-radius: 20px;
+      animation: pulse 6s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-message {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #f9f9f9cc;
+      margin-bottom: 25px;
+    }
+
+    .auth-links, .links-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0, 191, 166, 0.2);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    a.button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: var(--primary-dark);
+      transition: var(--transition);
+      z-index: -1;
+      border-radius: 50px;
+    }
+
+    a.button:hover::before {
+      width: 100%;
+    }
+
+    a.button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 191, 166, 0.4);
+    }
+
+    a.button:active {
+      transform: translateY(0);
+    }
+
+    .auth-links a {
+      font-size: 1.1rem;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-links a:hover {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    footer {
+      background: var(--secondary);
+      color: var(--text-light);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      border-radius: 16px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 20px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .welcome-message {
+        font-size: 1.1rem;
+      }
+
+      a.button {
+        padding: 12px 28px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Smart Drainage System</h1>
+    <p class="welcome-message">
+      Revolutionizing water management with real-time monitoring and efficient drainage solutions.
+    </p>
+
+    {% if username %}
+      <p>Hello, <strong>{{ username }}</strong>!</p>
+      <div class="links-container">
+        <a href="/dashboard" class="button">Go to Dashboard</a>
+        <a href="/logout" class="button">Logout</a>
+      </div>
+    {% else %}
+      <p>You are not logged in.</p>
+      <div class="auth-links">
+        <a href="/login" class="button">Login</a>
+        <a href="/register" class="button">Register</a>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,836 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Drainage Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css">
+    <style>
+  :root {
+  --primary: #00c9a7;         /* Teal Green */
+  --primary-dark: #00a38c;    /* Darker Teal */
+  --secondary: #f77062;       /* Coral */
+  --success: #00e0d1;         /* Aqua */
+  --warning: #ffb74d;         /* Warm Amber */
+  --danger: #ff5252;          /* Bright Red */
+  --light: rgba(255, 255, 255, 0.1); /* Glass-like light background */
+  --dark: #444444;            /* Muted dark text */
+  --border-radius: 16px;
+  --box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  --transition: all 0.3s ease;
+}
+
+
+
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #00c9a7 0%, #f77062 100%);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* Header & Navigation */
+    .header {
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      color: white;
+      padding: 1rem;
+      box-shadow: var(--box-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .logo i {
+      font-size: 2rem;
+    }
+
+    .top-nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .top-nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+    }
+
+    .top-nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .active-link {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Side Navigation */
+    .side-nav {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background: white;
+      box-shadow: var(--box-shadow);
+      z-index: 1001;
+      overflow-y: auto;
+      transition: var(--transition);
+    }
+
+    .side-nav.open {
+      left: 0;
+    }
+
+    .side-nav-header {
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .side-nav-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .side-nav-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .side-nav-menu {
+      padding: 1rem 0;
+    }
+
+    .side-nav-item {
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--dark);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .side-nav-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .side-nav-item.active {
+      background-color: rgba(2, 136, 209, 0.1);
+      color: var(--primary);
+      border-left: 4px solid var(--primary);
+    }
+
+    .side-nav-divider {
+      height: 1px;
+      background-color: #e0e0e0;
+      margin: 1rem 0;
+    }
+
+    .side-nav-subtitle {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #78909c;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    /* Dashboard Header */
+    .dashboard-header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, var(--secondary), var(--primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .dashboard-header p {
+      color: #546e7a;
+      font-size: 1.1rem;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .status-bar::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 6px;
+    }
+
+    .status-normal::before {
+      background-color: var(--success);
+    }
+
+    .status-warning::before {
+      background-color: var(--warning);
+    }
+
+    .status-alert::before {
+      background-color: var(--danger);
+    }
+
+    .status-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-info h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .status-normal .status-badge {
+      background-color: rgba(67, 160, 71, 0.15);
+      color: var(--success);
+    }
+
+    .status-warning .status-badge {
+      background-color: rgba(255, 152, 0, 0.15);
+      color: var(--warning);
+    }
+
+    .status-alert .status-badge {
+      background-color: rgba(229, 57, 53, 0.15);
+      color: var(--danger);
+    }
+
+    .status-detail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-detail i {
+      color: var(--primary);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 1rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Sensor Grid */
+    .sensor-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .sensor-card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .sensor-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .sensor-icon {
+      background: rgba(2, 136, 209, 0.1);
+      color: var(--primary);
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      font-size: 1.8rem;
+    }
+
+    .sensor-title {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .sensor-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+    }
+
+    .sensor-unit {
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Button Styles */
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #01579b;
+    }
+
+    .btn-secondary {
+      background-color: #e0e0e0;
+      color: var(--dark);
+    }
+
+    .btn-secondary:hover {
+      background-color: #cccccc;
+    }
+
+    .btn-success {
+      background-color: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #2e7d32;
+    }
+
+    .btn-warning {
+      background-color: var(--warning);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background-color: #f57c00;
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c62828;
+    }
+
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    /* Footer */
+    .footer {
+      background: white;
+      border-top: 1px solid #e0e0e0;
+      padding: 1.5rem;
+      text-align: center;
+      color: #78909c;
+      margin-top: 2rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sensor-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+      .tab-btn {
+            padding: 10px 20px;
+            background-color: #007b5e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+      .control-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.control-btn:hover {
+    background-color: #e68900;
+}
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+
+        Smart Drainage Dashboard
+      </div>
+      <nav class="top-nav">
+        <a href="/logout">Logout</a>
+        <button class="btn btn-icon btn-secondary" id="sidebarToggleMobile">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Side Navigation -->
+  <nav class="side-nav" id="sideNav">
+    <div class="side-nav-header">
+      <div class="side-nav-title">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </div>
+      <button class="side-nav-close" id="sideNavClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul class="side-nav-menu">
+      <li><a href="/home" class="side-nav-item active"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="/analytics" class="side-nav-item"><i class="fas fa-chart-line"></i> Analytics</a></li>
+      <li><a href="/settings" class="side-nav-item"><i class="fas fa-cogs"></i> Settings</a></li>
+      <li class="side-nav-divider"></li>
+      <li><a href="/help-center" class="side-nav-item"><i class="fas fa-question-circle"></i>Help Center</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container">
+    <section class="dashboard-header">
+      <h1>Drainage Monitoring Dashboard</h1>
+      <p>Real-time sensor data and blockage detection system</p>
+    </section>
+
+<div id="live" class="tab active">
+    <!-- Status Bar -->
+    <section id="statusBar" class="status-bar status-normal">
+      <div class="status-content">
+        <div class="status-info">
+          <h2><i class="fas fa-info-circle"></i> System Status:
+            <span id="statusText" class="status-badge">Normal</span>
+          </h2>
+        </div>
+        <div class="status-details">
+          <div class="status-detail">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location: <strong id="locationDisplay">Zone-3</strong></span>
+          </div>
+          <div class="status-detail">
+            <i class="fas fa-clock"></i>
+            <span>Last Updated: <strong id="lastUpdated">--:--:--</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+     <!-- Tabs -->
+    <div class="tabs" id="dashboardTabs">
+      <button class="tab-btn active" data-tab="live">Live Data</button>
+      <button class="tab-btn" data-tab="history">History</button>
+      <button class="tab-btn" data-tab="alerts">Alerts</button>
+    </div>
+
+<div id="liveTab" class="tab-content active">
+  <div class="sensor-grid" id="sensorGrid">
+
+    <div class="sensor-card">
+      <div class="sensor-icon"><i class="fas fa-water"></i></div>
+      <h3 class="sensor-title">Water Level</h3>
+      <p class="sensor-value" id="waterLevel">0.00</p>
+      <p class="sensor-unit">cm</p>
+    </div>
+
+    <div class="sensor-card">
+      <div class="sensor-icon"><i class="fas fa-tint"></i></div>
+      <h3 class="sensor-title">Flow Rate</h3>
+      <p class="sensor-value" id="flowRate">0.00</p>
+      <p class="sensor-unit">L/min</p>
+    </div>
+
+    <!--  Vibration -->
+    <div class="sensor-card">
+      <div class="sensor-icon"><i class="fas fa-wave-square"></i></div>
+      <h3 class="sensor-title">Vibration</h3>
+      <p class="sensor-value" id="vibration">0.00</p>
+      <p class="sensor-unit">Hz</p>
+    </div>
+
+    <!-- Gas Concentration -->
+    <div class="sensor-card">
+      <div class="sensor-icon"><i class="fas fa-smog"></i></div>
+      <h3 class="sensor-title">Gas Concentration</h3>
+      <p class="sensor-value" id="gasConcentration">0.00</p>
+      <p class="sensor-unit">ppm</p>
+    </div>
+
+    <!--  Proximity Sensor -->
+    <div class="sensor-card">
+      <div class="sensor-icon"><i class="fas fa-ruler-horizontal"></i></div>
+      <h3 class="sensor-title">Proximity</h3>
+      <p class="sensor-value" id="proximity">--</p>
+      <p class="sensor-unit">cm</p>
+    </div>
+
+    <!--  Triggered Sensor -->
+    <div class="sensor-card">
+      <div class="sensor-icon"><i class="fas fa-bell"></i></div>
+      <h3 class="sensor-title">Triggered Sensor</h3>
+      <p class="sensor-value" id="triggeredSensor">None</p>
+    </div>
+
+  </div>
+</div>
+  <div class="btn-group">
+    <button class="control-btn" onclick="startGenerating()">Start Monitoring</button>
+    <button class="control-btn" onclick="stopGenerating()">Stop Monitoring</button>
+</div>
+    <!-- History Tab -->
+<div id="historyTab" class="tab-content active">
+  <h2>Historical Data</h2>
+
+  <!-- Action Buttons -->
+  <div class="table-actions" style="margin-bottom: 1rem;">
+    <button class="btn btn-success" onclick="downloadCSV()">
+      <i class="fas fa-download"></i> Export CSV
+    </button>
+    <button class="btn btn-danger" onclick="clearHistory()">
+      <i class="fas fa-trash"></i> Clear
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="data-table-container">
+    <table class="data-table" border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse: collapse;">
+      <thead style="background-color: #f5f5f5;">
+        <tr>
+          <th>ID</th>
+                <th>Location</th>
+                <th>Timestamp</th>
+                <th>Status</th>
+                <th>Sensor</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody">
+        <!-- Example Normal Row -->
+
+      </tbody>
+    </table>
+  </div>
+</div>
+ <!-- Alerts Tab -->
+    <div id="alertsTab" class="tab-content">
+      <h2>System Alerts</h2>
+      <div class="alert-card">
+        <div class="alert-header">
+          <h3>No recent alerts</h3>
+        </div>
+        <div class="alert-body">
+          <p class="alert-message">All systems operating within normal parameters.</p>
+        </div>
+      </div>
+    </div>
+  <!-- Footer -->
+    <footer class="footer">
+      &copy; 2025 Smart Drainage System | All Rights Reserved
+    </footer>
+  </main>
+
+
+<script>
+    // Sidebar Toggle
+    const sidebar = document.getElementById('sideNav');
+    const sidebarToggle = document.getElementById('sidebarToggleMobile');
+    const sidebarClose = document.getElementById('sideNavClose');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.add('open');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+    });
+
+    // Tab Switching
+    const tabs = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.getAttribute('data-tab');
+        tabContents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === target + 'Tab') {
+            content.classList.add('active');
+          }
+        });
+      });
+    });
+let dataInterval;
+let currentId = 1;
+
+
+
+function startGenerating() {
+    if (!dataInterval) {
+        dataInterval = setInterval(() => {
+            fetch('/live_data')
+                .then(res => res.json())
+                .then(data => {
+                    updateLiveData(data);
+                    updateHistory(data);
+                })
+                .catch(err => console.error('Error:', err));
+        }, 5000); // 5 seconds
+    }
+}
+
+function stopGenerating() {
+    clearInterval(dataInterval);
+    dataInterval = null;
+}
+
+function updateLiveData(data) {
+    const d = data.sensor_data;
+
+    // Update sensor values
+    document.getElementById('waterLevel').textContent = d.water_level;
+    document.getElementById('flowRate').textContent = d.flow_rate;
+    document.getElementById('vibration').textContent = d.vibration;
+    document.getElementById('gasConcentration').textContent = d.gas_concentration;
+    document.getElementById('proximity').textContent = d.proximity ;
+    //=== 1 ? "Detected" : "No Object";
+    document.getElementById('triggeredSensor').textContent = d.triggered_sensor;
+
+    // Update status bar
+    document.getElementById('statusText').textContent = data.status;
+    document.getElementById('locationDisplay').textContent = d.location;
+    document.getElementById('lastUpdated').textContent = data.timestamp;
+
+    // Update status bar color
+    const statusBar = document.getElementById('statusBar');
+    statusBar.className = `status-bar ${data.status.includes('Detected') ? 'status-alert' : 'status-normal'}`;
+}
+function updateHistory(data) {
+    const table = document.getElementById('historyBody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${currentId++}</td>
+        <td>${data.sensor_data.location}</td>
+        <td>${data.timestamp}</td>
+        <td>${data.status}</td>
+        <td>${data.sensor_data.triggered_sensor}</td>
+    `;
+    table.prepend(row);
+}
+
+function downloadCSV() {
+    const table = document.getElementById('historyTable');
+    let csv = [];
+    for (let row of table.rows) {
+        let cols = Array.from(row.cells).map(cell => `"${cell.innerText}"`);
+        csv.push(cols.join(","));
+    }
+
+    const blob = new Blob([csv.join("\n")], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "blockage_history.csv";
+    a.click();
+}
+
+function clearHistory() {
+    document.getElementById('historyBody').innerHTML = '';
+    currentId = 1;
+  }
+
+window.onload = () => showTab('live');
+</script>
+
+
+
+</body>
+</html>
+<!--DOCTYPE html>
+<html>
+<head>
+    <title>Smart Drainage System</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .sensor { margin: 15px 0; padding: 15px; background: #f8f8f8; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>📡 Live Sensor Data</h1>
+
+    <div id="sensorData">
+        <div class="sensor"><strong>Water Level:</strong> <span id="waterLevel">--</span> mm</div>
+        <div class="sensor"><strong>Flow Rate:</strong> <span id="flowRate">--</span> L/s</div>
+        <div class="sensor"><strong>Pressure:</strong> <span id="pressure">--</span> kPa</div>
+        <div class="sensor"><strong>Vibration:</strong> <span id="vibration">--</span> m/s²</div>
+        <div class="sensor"><strong>Gas Concentration:</strong> <span id="gas">--</span> ppm</div>
+        <div class="sensor"><strong>Proximity:</strong> <span id="proximity">--</span></div>
+        <div style="margin-top: 20px;"><strong>Status:</strong> <span id="status">--</span></div>
+    </div>
+
+    <script>
+        async function fetchSensorData() {
+            try {
+                const res = await fetch('/live_data');
+                const data = await res.json();
+
+                // Update DOM
+                document.getElementById('waterLevel').innerText = data.sensor_data.water_level;
+                document.getElementById('flowRate').innerText = data.sensor_data.flow_rate;
+                document.getElementById('pressure').innerText = data.sensor_data.pressure;
+                document.getElementById('vibration').innerText = data.sensor_data.vibration;
+                document.getElementById('gas').innerText = data.sensor_data.gas_concentration;
+                document.getElementById('proximity').innerText =
+                    data.sensor_data.proximity === 1 ? 'Detected' : 'No Object';
+                document.getElementById('status').innerText = data.status;
+            } catch (err) {
+                console.error("Failed to fetch data:", err);
+            }
+        }
+
+        // Fetch every 5 seconds
+        setInterval(fetchSensorData, 5000);
+        fetchSensorData();
+    </script>
+</body>
+</html-->
+
